@@ -66,6 +66,18 @@ elif segmentation_type == "Video Segmentation":
             ret, frame = cap.read()
             if ret:
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                segmented_frame = frame // 2  # Dummy output (darkened frame)
-                st.image(segmented_frame, caption="Segmented Frame", use_container_width=True)
+                # Resize input image
+                input_frame = pad_and_resize(frame, (640, 640))
+                
+                # Load the model using the cached function
+                base_dir = os.getcwd()
+                model_path = os.path.join(base_dir, "assets", "best.onnx")
+                yoloseg = load_model(model_path)
+                
+                # Update object localizer
+                boxes, scores, class_ids, masks = yoloseg(input_frame)
+
+                combined_frame= yoloseg.draw_masks(input_frame, mask_alpha=0.4)
+                
+                st.image(combined_frame, caption="Segmented Frame", use_container_width=True)
         cap.release()
