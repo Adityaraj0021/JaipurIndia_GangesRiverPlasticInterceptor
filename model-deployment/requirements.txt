@@ -1,5 +1,7 @@
 streamlit
 requests
 opencv-python
-numpy
 Pillow
+numpy
+onnxruntime
+streamlit-image-zoom

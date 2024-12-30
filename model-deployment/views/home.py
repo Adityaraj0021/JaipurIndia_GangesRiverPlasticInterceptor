@@ -3,7 +3,7 @@ import streamlit as st
 from forms.contact import contact_form
 
 
-@st.experimental_dialog("Contact Me")
+@st.dialog("Contact Me")
 def show_contact_form():
     contact_form()
 
@@ -12,12 +12,12 @@ def show_contact_form():
 st.title("Omdena Jaipur Chapter", anchor=False)
 
 # --- HERO SECTION ---
-col1, col2 = st.columns(2, gap="small", vertical_alignment="center")
+col1, col2 = st.columns(2, gap="large", vertical_alignment="center")
 with col1:
-    st.image("./assets/omdena_jaipur_chapter.jpeg", width=230)
+    st.image("./assets/omdena_jaipur_chapter.jpeg", use_container_width=True)
 
 with col2:
-    st.subheader("Protect Ganges River with AI 🌊", anchor=False)
+    st.write("### Protect Ganges River with Artificial Intelligence 🌊")
     st.write(
         """
         Welcome to the Jaipur Chapter of Omdena, where we leverage AI to protect 

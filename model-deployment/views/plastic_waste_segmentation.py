@@ -1,10 +1,17 @@
+import os
 import streamlit as st
 import cv2
 import numpy as np
-
 from PIL import Image
+from yoloseg.YOLOSeg import YOLOSeg
+from yoloseg.utils import pad_and_resize
 
-st.subheader("Plastic Waste Segmentation")
+# Define a cached function to load the YOLOSeg model
+@st.cache_resource
+def load_model(model_path, conf_thres=0.2, iou_thres=0.3):
+    return YOLOSeg(model_path, conf_thres=conf_thres, iou_thres=iou_thres)
+
+st.markdown("<h3 style='text-align: center;'>Plastic Waste Segmentation</h3>", unsafe_allow_html=True)
 
 # Toggle between image and video segmentation
 segmentation_type = st.radio(
@@ -18,14 +25,31 @@ if segmentation_type == "Image Segmentation":
     uploaded_image = st.file_uploader("Choose an image file", type=["jpg", "jpeg", "png"])
 
     if uploaded_image is not None:
-        # Display the uploaded image
+        # Read the uploaded image using PIL
         image = Image.open(uploaded_image)
-        st.image(image, caption="Uploaded Image", use_column_width=True)
+        img = np.array(image)
+        
+        # Resize input image
+        input_img = pad_and_resize(img, (640, 640))
+        
+        # Load the model using the cached function
+        base_dir = os.getcwd()
+        model_path = os.path.join(base_dir, "assets", "best.onnx")
+        yoloseg = load_model(model_path)
+        
+        # Perform segmentation
+        boxes, scores, class_ids, masks = yoloseg(input_img)
+        combined_img = yoloseg.draw_masks(input_img)
+        
+        # Display the uploaded image
+        st.markdown("<h4 style='text-align: center;'>Input Image</h4>", unsafe_allow_html=True)
+        st.image(image, use_container_width=True)
+        
+        st.markdown("---")
 
-        # Simulate segmentation output (replace with your model's prediction)
-        st.write("### Segmentation Output")
-        segmented_image = np.array(image) // 2  # Dummy output (darkened image)
-        st.image(segmented_image, caption="Segmented Image", use_column_width=True)
+        # Display the segmented image
+        st.markdown("<h4 style='text-align: center;'>Segmented Image</h4>", unsafe_allow_html=True)
+        st.image(combined_img, use_container_width=True)
 
 elif segmentation_type == "Video Segmentation":
     st.write("### Upload a Video")
@@ -43,9 +67,5 @@ elif segmentation_type == "Video Segmentation":
             if ret:
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 segmented_frame = frame // 2  # Dummy output (darkened frame)
-                st.image(segmented_frame, caption="Segmented Frame", use_column_width=True)
+                st.image(segmented_frame, caption="Segmented Frame", use_container_width=True)
         cap.release()
-
-# Footer information
-st.markdown("---")
-st.caption("Plastic Waste Segmentation Tool")
