@@ -11,12 +11,5 @@ def convert_to_mp4(input_file, output_file):
         preset='fast',     # Balance between speed and quality
         crf=23,            # Constant Rate Factor for a good quality-to-size ratio
         movflags='faststart'  # Move the moov atom to the start for better streaming compatibility
-    ).run()
+    ).overwrite_output().run()
     
-def delete_file(file_path):
-    # Check if the file exists to avoid errors
-    if os.path.exists(file_path):
-        os.remove(file_path)
-        print(f"File {file_path} deleted successfully.")
-    else:
-        print(f"File {file_path} not found.")
