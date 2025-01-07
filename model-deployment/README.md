@@ -1,5 +1,3 @@
-<!-- markdownlint-disable MD026 -->
-
 # Usage 🔧
 
 This project is made for **Python 3.11** version.
@@ -93,3 +91,5 @@ How to deploy a project to Streamlit Cloud see in the official documentation [he
 See also the official documentation from Streamlit about docker deployments:
 
 [https://docs.streamlit.io/knowledge-base/tutorials/deploy/docker](https://docs.streamlit.io/knowledge-base/tutorials/deploy/docker)
+
+ 
