@@ -17,7 +17,7 @@ def load_model(model_path, conf_thres=0.2, iou_thres=0.3):
 
 # Load the Model
 base_dir = os.getcwd()
-model_path = os.path.join(base_dir, "assets", "best.onnx")
+model_path = os.path.join(base_dir, "assets", "yolov11L.onnx")
 yoloseg = load_model(model_path)
 
 st.markdown("<h3 style='text-align: center;'>Plastic Waste Segmentation</h3>", unsafe_allow_html=True)
