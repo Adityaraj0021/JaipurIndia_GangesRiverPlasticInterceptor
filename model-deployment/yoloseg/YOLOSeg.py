@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 import onnxruntime
 
-from yoloseg.utils import xywh2xyxy, nms, draw_detections, sigmoid, pad_and_resize
+from yoloseg.utils import xywh2xyxy, nms, draw_detections, sigmoid
 
 
 class YOLOSeg:
@@ -148,7 +148,7 @@ class YOLOSeg:
 
         return boxes
 
-    def draw_detections(self, image, draw_scores=True, mask_alpha=0.4):
+    def draw_detections_(self, image, draw_scores=True, mask_alpha=0.4):
         return draw_detections(image, self.boxes, self.scores,
                                self.class_ids, mask_alpha)
 
